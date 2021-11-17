@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+}
+
+/* Bootstrap Redefinitions */
+.text-light{
+  color: var(--light)
+}
+
+.text-primary{
+  color: var(--primary) !important;
+}
+
+.display-big{
+  font-size: 7rem;
+}

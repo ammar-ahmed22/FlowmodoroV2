@@ -1,0 +1,16 @@
+body {
+  margin: 0;
+  font-family: "Fira Code", monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--dark);
+  color: var(--light);
+}
+
+:root{
+  --dark: #282A36;
+  --primary: #AE82DA;
+  --light: #fff;
+}
+
+

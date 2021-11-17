@@ -1,9 +1,10 @@
-import './App.css';
+import './css/App.css';
+import Main from './pages/Main';
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      <h1>Flowmodoro V2</h1> 
+      <Main />
     </div>
   );
 }
