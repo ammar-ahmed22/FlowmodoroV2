@@ -28,7 +28,7 @@ const Indicator = ({ isBreak, elapsed, workTime }) => {
       <div className="curr-break">
         <span className="text-primary">
           <span className="calc-break px-2 py-1">{display}</span> - current
-          break time
+            break time
         </span>
       </div>
     );

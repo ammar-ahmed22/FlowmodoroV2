@@ -1,10 +1,10 @@
 import React from 'react';
-import Clock from '../components/Clock';
+import Flowmodoro from '../components/Flowmodoro';
 
 const Main = () => {
     return (
         <div className="container">
-            <Clock />
+            <Flowmodoro />
         </div>
     );
 }
