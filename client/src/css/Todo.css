@@ -1,0 +1,14 @@
+.todo{
+    position: relative;
+    margin-top: 5vh;
+}
+
+.todo-heading{
+    width: 30%;
+}
+
+.todo-list{
+    width: 30%;
+}
+
+
