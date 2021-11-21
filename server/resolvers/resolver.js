@@ -26,7 +26,7 @@ const resolver = {
 
             await user.save();
 
-            return user;
+            return user.tasks;
         }
         
 
@@ -54,6 +54,15 @@ const resolver = {
         
         
     },
+    getTasks: async ({ id }) =>{
+        const user = await User.findById(id);
+
+        if (!user){
+            throw new Error("User not found")
+        }else{
+            return user.tasks;
+        }
+    },
     // Updating resolvers
     updateTask: async ({id, taskId, input}) => {
         
@@ -63,12 +72,7 @@ const resolver = {
         if (!user){
             throw new Error("User not found")
         }else{
-            // for (let i = 0; i < user.tasks.length; i++){
-            //     if (user.tasks[i].taskId === taskId){
-            //         user.tasks[i] = input;
-            //     }
-            // }
-
+            
             user.updateTask(taskId, input);
 
             await user.save();
@@ -80,14 +84,40 @@ const resolver = {
         
 
     },
+    completeTask: async ({id, taskId, completed}) => {
+        const user = await User.findById(id);
+        if (user){
+            const task = user.findTaskById(taskId);
+            
+            if (task){
+                task.completed = completed;
+
+                await user.save();
+
+                return user.tasks;
+            }else{
+                throw new Error("Task not found")
+            }
+            
+        }else{
+            throw new Error("User not found")
+        }
+        
+
+
+
+    },
     //Deleting resolvers
     deleteTask: async ({id, taskId}) =>{
-        const user = await user.findById(id);
+        const user = await User.findById(id);
 
         if (!user){
             throw new Error("User not found")
         }else{
-
+            user.removeTaskById(taskId);
+            await user.save();
+            
+            return user.tasks;
         }
     },
     deleteUser: async (id) =>{
