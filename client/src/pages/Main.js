@@ -1,10 +1,12 @@
 import React from 'react';
-import Clock from '../components/Clock';
+import Flowmodoro from '../components/Flowmodoro';
+import Todo from '../components/Todo';
 
 const Main = () => {
     return (
-        <div className="container">
-            <Clock isBreak={false}/>
+        <div className="container mb-5">
+            <Flowmodoro />
+            <Todo />
         </div>
     );
 }

@@ -1,10 +1,11 @@
-.App {
-  text-align: center;
-}
 
 /* Bootstrap Redefinitions */
 .text-light{
   color: var(--light)
+}
+
+.text-dark{
+  color: var(--dark);
 }
 
 .text-primary{
@@ -13,4 +14,17 @@
 
 .display-big{
   font-size: 7rem;
+}
+
+.btn:focus{
+  box-shadow: none;
+}
+
+.btn-primary{
+  background: var(--primary);
+  border: none;
+}
+
+.btn-primary:hover{
+  background: var(--primary);
 }

@@ -1,0 +1,16 @@
+.navigation{
+    width: 30%;
+    border: 2px solid var(--primary);
+    border-radius: .5rem;
+}
+
+.navigation button{
+    width: 100%;
+    /* border-radius: .5rem; */
+}
+
+.active{
+    border: 2px solid var(--primary);
+    background: var(--primary);
+    color: var(--dark) !important; 
+}
