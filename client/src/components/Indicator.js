@@ -2,11 +2,11 @@ import React, { useEffect } from "react";
 import "../css/Indicator.css";
 import { displayCalcBreak } from "../utils/time";
 
-const Indicator = ({ isBreak, elapsed, workTime }) => {
+const Indicator = ({ isBreak, elapsed, workTime, ratio }) => {
   useEffect(() => {
     if (isBreak) {
       const movingBar = document.querySelector(".moving-bar");
-      const percentage = ((workTime - elapsed) / workTime) * 100;
+      const percentage = ((Math.floor(workTime / ratio) - elapsed) / Math.floor(workTime / ratio)) * 100;
 
       if (percentage !== 0) {
         movingBar.style.width = `${percentage}%`;
@@ -14,7 +14,7 @@ const Indicator = ({ isBreak, elapsed, workTime }) => {
         movingBar.style.display = "none";
       }
     }
-  }, [isBreak, elapsed, workTime]);
+  }, [isBreak, elapsed, workTime, ratio]);
   if (isBreak) {
     return (
       <div className="static-bar">
@@ -23,7 +23,7 @@ const Indicator = ({ isBreak, elapsed, workTime }) => {
     );
   } else {
     // TODO: Make this time divided by ratio
-    const display = displayCalcBreak(elapsed);
+    const display = displayCalcBreak(Math.floor(elapsed / ratio));
     return (
       <div className="curr-break">
         {(elapsed > 0) && <span className="text-primary">

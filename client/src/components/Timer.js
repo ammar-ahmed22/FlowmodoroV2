@@ -15,7 +15,7 @@ const Timer = ({
   state,
   elapsed,
   workTime,
-  children,
+  ratio,
 }) => {
   // setInterval ID
   const [IID, setIID] = useState();
@@ -58,7 +58,7 @@ const Timer = ({
   };
 
   if (isBreak) {
-    if (workTime - elapsed <= 0) {
+    if (Math.floor(workTime / ratio) - elapsed <= 0) {
       stopwatch.stop(IID);
     }
   }
@@ -66,7 +66,7 @@ const Timer = ({
   return (
     <>
       <Navigation isBreak={isBreak} modeSwitcher={modeSwitchHandler} />
-      <Clock elapsed={elapsed} isBreak={isBreak} workTime={workTime} />
+      <Clock elapsed={elapsed} isBreak={isBreak} workTime={workTime} ratio={ratio} />
       <div className="controls">
         <ReactTooltip place="bottom" />
         <button

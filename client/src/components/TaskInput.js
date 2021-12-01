@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/Task.css";
 import "../css/TaskInput.css";
+import { useQuery, useMutation } from "@apollo/client";
 
-const TaskInput = () => {
+
+const TaskInput = ({ userID, setUserID, setTasks }) => {
   const [inputting, setInputting] = useState(false);
   const [areNotes, setAreNotes] = useState(false);
   const [taskName, setTaskName] = useState("");
   const [notes, setNotes] = useState("");
+
+
+  useEffect(()=>{
+
+    if (userID){
+      // set boolean state to createTask on submit
+    }else{
+      // set boolean state to create a new user on creating a task
+    }
+  }, [userID])
+
+  const onSaveHandler = e => {
+
+  }
 
   if (inputting) {
     return (
@@ -43,7 +59,7 @@ const TaskInput = () => {
           >
             Cancel
           </button>
-          <button className="btn btn-primary text-dark">Save</button>
+          <button className="btn btn-primary text-dark" onClick={onSaveHandler}>Save</button>
         </div>
       </div>
     );

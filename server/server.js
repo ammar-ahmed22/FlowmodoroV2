@@ -3,6 +3,7 @@ dotenv.config({path: "./config.env"});
 let database = [];
 
 import express from "express";
+import cors from 'cors';
 import { graphqlHTTP } from "express-graphql";
 
 import connectDB from "./utils/connectDB";
@@ -12,6 +13,7 @@ import resolver from "./resolvers/resolver";
 
 
 const app = express();
+app.use(cors());
 
 connectDB();
 

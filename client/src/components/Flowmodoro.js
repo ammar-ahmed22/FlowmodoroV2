@@ -10,6 +10,7 @@ const Flowmodoro = () => {
   const [isBreak, setIsBreak] = useState(false);
   const [workTime, setWorkTime] = useState(0);
   
+  
 
   return (
     <section className="flowmodoro d-flex flex-column align-items-center" id="flowmodoro">
@@ -34,9 +35,10 @@ const Flowmodoro = () => {
         hasStarted={elapsed > 0}
         elapsed={elapsed}
         workTime={workTime}
+        ratio={5}
         state={{ setIsStarted, setElapsed, setIsBreak, setWorkTime }}
       />
-      <Indicator isBreak={isBreak} elapsed={elapsed} workTime={workTime} />
+      <Indicator isBreak={isBreak} elapsed={elapsed} workTime={workTime} ratio={5} />
     </section>
   );
 };
