@@ -1,0 +1,8 @@
+{
+  "name": "flowmodoro-server",
+  "version": "1.0.0",
+  "description": "Server for Flowmodoro Application",
+  "main": "server.js",
+  "author": "Ammar Ahmed",
+  "license": "MIT"
+}

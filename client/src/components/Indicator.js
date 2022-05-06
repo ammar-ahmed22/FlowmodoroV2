@@ -22,7 +22,6 @@ const Indicator = ({ isBreak, elapsed, workTime, ratio }) => {
       </div>
     );
   } else {
-    // TODO: Make this time divided by ratio
     const display = displayCalcBreak(Math.floor(elapsed / ratio));
     return (
       <div className="curr-break">

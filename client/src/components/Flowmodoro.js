@@ -4,6 +4,8 @@ import "../css/Flowmodoro.css";
 import Timer from "./Timer";
 import Indicator from "./Indicator";
 
+import { displayCalcBreak } from "../utils/time";
+
 const Flowmodoro = () => {
   const [isStarted, setIsStarted] = useState(false);
   const [elapsed, setElapsed] = useState(0);
@@ -17,8 +19,8 @@ const Flowmodoro = () => {
       {isBreak ? (
         <h5 className="text-light pb-4">
           You were able to work for{" "}
-          <span className="text-primary">25m 10s</span> giving you{" "}
-          <span className="text-primary">5m 2s</span> to rest. Keep it up!
+          <span className="text-primary">{displayCalcBreak(workTime)}</span> giving you{" "}
+          <span className="text-primary">{displayCalcBreak(Math.floor(workTime / 5))}</span> to rest. Keep it up!
         </h5>
       ) : (
         <h5 className="text-light pb-4">

@@ -18,7 +18,7 @@ const App = () => {
   });
 
   
-  if (!loading){
+  if (!loading && data){
     console.log(data.getTasks[0].taskName)
   }
   return (
