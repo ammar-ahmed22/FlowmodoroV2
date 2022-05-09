@@ -1,0 +1,35 @@
+type Task{
+    _id: ID!
+    name: String!
+    completed: Boolean!
+    notes: String
+}
+
+type SessionData {
+    _id: ID!
+    workTime: Int!
+    breakRatio: Int!
+    datetimeCompleted: String!
+}
+
+type User{
+    _id: ID!
+    tasks: [Task]
+    sessionData: [SessionData]
+}
+
+type Query{
+    hello: String!
+    getTasks(id: String!): [Task]!
+    getSessionData(id: String!): [SessionData]!
+}
+
+
+
+type Mutation{
+    createUserWithTask(name: String!, completed: Boolean!, notes: String) : User!,
+    createUserWithSession(workTime: Int!, breakRatio: Int!, datetimeCompleted: String!) : User!
+    addSessionData(id: String!, workTime: Int!, breakRatio: Int!, datetimeCompleted: String!) : User!
+    addTask(id: String!, name: String!, completed: Boolean!, notes: String) : User!
+    deleteTask(id: String!, taskId: String!) : User!
+}
