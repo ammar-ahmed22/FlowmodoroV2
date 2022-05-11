@@ -10,11 +10,21 @@ const FlowProvider = ({ children }) => {
             ...prev,
             isBreak: prev.isBreak ? false : true,
         })),
-        workTimeElapsed: 0,
-        setWorkTimeElapsed: time => setState( prev => ({
+        timeElapsed: 0,
+        setTimeElapsed: time => setState( prev => ({
             ...prev,
-            workTimeElapsed: time,
-        })) 
+            timeElapsed: time,
+        })),
+        workTime: 0,
+        breakTime: 0,
+        setWorkTime: time => setState( prev => ({
+            ...prev,
+            workTime: time
+        })),
+        setBreakTime: time => setState( prev => ({
+            ...prev,
+            breakTime: time
+        }))
     })
 
     return (

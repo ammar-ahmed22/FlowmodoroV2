@@ -1,47 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import FlowContext from "../contexts/FlowContext";
 
 
 const useStopwatch = () => {
     const [intervalID, setIntervalID] = useState();
     const [elapsed, setElapsed] = useState(0);
+    const { setTimeElapsed, timeElapsed } = useContext(FlowContext);
+    // const [isStarted, setIsStarted] = useState(false);
 
-    const start = (callback=null) => {
+    useEffect(() => {
+        setTimeElapsed(elapsed);
+    }, [elapsed])
+
+    useEffect(() => {
+        setElapsed(timeElapsed);
+    }, [timeElapsed])
+
+    
+    const start = (direction) => {
+        const secondLength = process.env.NODE_ENV === "development" ? 100 : 1000;
+        
         setIntervalID(
             setInterval(() => {
                 setElapsed( elapsed => {
-                    if (callback){
-                        callback(elapsed + 1);
+                    
+                    if (elapsed + direction === 0){
+                        clearInterval(intervalID)
                     }
                     
-                    return elapsed + 1
+                    return elapsed + direction
                 });
                 
-            }, 1000)
+            }, secondLength)
         )
-
-        //callback(elapsed)
     }
 
     const stop = () => {
         if (!intervalID){
             return;
         }
-
         clearInterval(intervalID);
     }
 
-    const reset = (callback=null) => {
+    const reset = (to=0) => {
         stop(intervalID);
-        setElapsed(0);
-        if (callback){
-            callback(0);
-        }
+        setElapsed(to);
     }
     return [
         elapsed,
         start,
         stop,
-        reset
+        reset,
+        setElapsed
     ]
 }
 

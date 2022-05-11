@@ -5,6 +5,10 @@ import App from './App';
 import { ChakraProvider, extendTheme, ColorModeScript } from "@chakra-ui/react";
 import { CookiesProvider } from "react-cookie" 
 import { mode } from "@chakra-ui/theme-tools"
+import { library } from "@fortawesome/fontawesome-svg-core"
+import { faArrowRotateLeft, faPlay, faPause, faBriefcase, faBed } from "@fortawesome/free-solid-svg-icons";
+
+library.add( faPlay, faArrowRotateLeft, faPause, faBriefcase, faBed )
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -26,7 +30,7 @@ const config = {
 const styles = {
   global: props => ({
     body: {
-      bg: mode("white", "gray.700")(props)
+      bg: mode("white", "gray.800")(props)
     }
   })
 }
