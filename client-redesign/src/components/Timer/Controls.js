@@ -4,7 +4,7 @@ import { HStack, Tooltip, IconButton } from "@chakra-ui/react";
 import useStopwatch from '../../hooks/useStopwatch';
 import { FontAwesomeIcon  } from '@fortawesome/react-fontawesome';
 
-const TimerControls = () => {
+const Controls = () => {
 
     const { isBreak, timeElapsed, setTimeElapsed, toggleIsBreak, setWorkTime, setBreakTime, breakTime } = useContext(FlowContext);
 
@@ -15,14 +15,31 @@ const TimerControls = () => {
 
     useEffect(() => {
         if (stopwatchDir === -1){
-            console.log("going backwards")
             if (elapsed === 0){
-                console.log("elaspsed is 0")
                 setIsStarted(false)
                 reset()
             }
         }
     }, [stopwatchDir, elapsed])
+
+    const styleProps = {
+        main: {
+            pt: 7
+        },
+        tooltip: {
+            hasArrow: true,
+            bg: "gray.800",
+            color: "white"
+        },
+        iconButton: {
+            variant: "ghost",
+            color: "primary",
+            fontSize: "2xl",
+            _hover: {
+                color: "white"
+            }
+        }
+    }
 
     useEffect(() => {
         if (isBreak){
@@ -75,14 +92,14 @@ const TimerControls = () => {
 
     return (
         <HStack pt="7">
-                <Tooltip label="Restart" hasArrow bg="gray.800" color="white" >
-                    <IconButton icon={<FontAwesomeIcon icon="arrow-rotate-left" />} disabled={isBreak ? timeElapsed === breakTime : timeElapsed === 0} variant="ghost" color="primary" fontSize="2xl" _hover={{ color: "white" }} onClick={handleRestart}/>
+                <Tooltip label="Restart" {...styleProps.tooltip} >
+                    <IconButton icon={<FontAwesomeIcon icon="arrow-rotate-left" />} disabled={isBreak ? timeElapsed === breakTime : timeElapsed === 0} {...styleProps.iconButton} onClick={handleRestart}/>
                 </Tooltip>
-                <Tooltip label={isStarted ? "Pause" : "Start"} hasArrow bg="gray.800" color="white" >
-                    <IconButton icon={<FontAwesomeIcon icon={isStarted ? "pause" : "play"}/>} variant="ghost" color="primary" fontSize="2xl" _hover={{ color: "white" }} onClick={e => isStarted ? handlePause(e) : handleStart(e)}/>
+                <Tooltip label={isStarted ? "Pause" : "Start"} {...styleProps.tooltip} >
+                    <IconButton icon={<FontAwesomeIcon icon={isStarted ? "pause" : "play"}/>} {...styleProps.iconButton} onClick={e => isStarted ? handlePause(e) : handleStart(e)}/>
                 </Tooltip>
-                <Tooltip label={isBreak ? "Work time" : "Break time"} hasArrow bg="gray.800" color="white" >
-                    <IconButton icon={<FontAwesomeIcon icon={isBreak ? "briefcase" : "bed"}/>} disabled={!isBreak && Math.floor(timeElapsed / 5) < 1} variant="ghost" color="primary" fontSize="2xl" _hover={{ color: "white" }} onClick={handleModeSwitch} />
+                <Tooltip label={isBreak ? "Work time" : "Break time"} {...styleProps.tooltip} >
+                    <IconButton icon={<FontAwesomeIcon icon={isBreak ? "briefcase" : "bed"}/>} disabled={!isBreak && Math.floor(timeElapsed / 5) < 1} {...styleProps.iconButton} onClick={handleModeSwitch} />
                 </Tooltip>
                 
                 
@@ -90,4 +107,4 @@ const TimerControls = () => {
     );
 }
 
-export default TimerControls;
+export default Controls;

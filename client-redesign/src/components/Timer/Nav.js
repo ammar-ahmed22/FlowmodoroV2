@@ -3,7 +3,7 @@ import FlowContext from '../../contexts/FlowContext';
 import { Button, Flex, useColorModeValue } from "@chakra-ui/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const TimerNav = () => {
+const Nav = () => {
 
     const { isBreak, toggleIsBreak, setWorkTime, setBreakTime, timeElapsed } = useContext(FlowContext);
 
@@ -38,7 +38,7 @@ const TimerNav = () => {
     }
 
     const handleClick = (e) => {
-        console.log(e.target.textContent);
+        
         const buttonMode = e.target.textContent.toLowerCase()
         
         if (isBreak && buttonMode === "work"){
@@ -64,4 +64,4 @@ const TimerNav = () => {
     );
 }
 
-export default TimerNav;
+export default Nav;

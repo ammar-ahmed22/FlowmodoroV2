@@ -3,10 +3,10 @@ import { Flex, Box, Button, HStack, VStack, Text, useColorModeValue, IconButton,
 import FlowContext from '../../contexts/FlowContext';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import useStopwatch from '../../hooks/useStopwatch';
-import TimerNav from './TimerNav';
-import TimerControls from './TimerControls';
+import Nav from './Nav';
+import Controls from './Controls';
 import { secondsToHMS } from '../../utils/time';
-import TimerIndicator from './TimerIndicator';
+import Indicator from './Indicator';
 
 
 const Timer = () => {
@@ -46,7 +46,7 @@ const Timer = () => {
 
     return (
         <VStack align="center" mt="5" spacing={7}>
-            <TimerNav />
+            <Nav />
             <HStack align="end" >
                 <VStack align="center" >
                     <Text >Hours</Text>
@@ -63,8 +63,8 @@ const Timer = () => {
                     <Text {...styleProps.timerNum} >{secondsToHMS(timeElapsed).s}</Text>
                 </VStack>
             </HStack>
-            <TimerControls />
-            <TimerIndicator />
+            <Controls />
+            <Indicator />
         </VStack>
     );
 }
