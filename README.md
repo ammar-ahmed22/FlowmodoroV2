@@ -25,8 +25,8 @@ This specific application is technically version 2 of the Flowmodoro application
 ## Technologies
 ### Front-End
 - React
-- Bootstrap
-- Apollo ?
+- Apollo
+- ChakraUI
 
 ### Back-End
 - Node.js
@@ -36,19 +36,20 @@ This specific application is technically version 2 of the Flowmodoro application
 - MongoDB
 
 ### Hosting
-- Google Firebase ?
-- Heroku ?
+- Google Firebase 
 - MongoDB Atlas
 
 ## Approach
 ### Timers
-The work mode stopwatch timer as well as the break mode countdown timer are implemented using the `setInterval` method built-in to Javascript as well as some state management with React. `React Hooks` are used to persist the state of the time worked as well as other variables such as if the timer has started, if it is break or work mode etc. 
+The work mode stopwatch timer as well as the break mode countdown timer are implemented using a custom `React Hook` which utilizes the `setInterval` method built-in to Javascript as well as some state management with React. `React Hooks` are used to persist the state of the time worked as well as other variables such as if the timer has started, if it is break or work mode etc. 
 
 ### To-do List
-The to-do list UI is created with React using state management with React Hooks. The to-do list tasks are persisted using a GraphQL API with a MongoDB database. As I did not want to require users to authenticate in order to use the to-do list, whenever a user creates a task, the local storage is checked for a unique ID. If there is a unique ID, the user already has data persisted in the backend and can be fetched. If there is not a unique ID in local storage, a new user is created in the database and its unique ID is saved in local storage. This means that user's to-do list tasks will only be persisted if they are using the same browser and they have not cleared their cache. 
+The to-do list UI is created with React using state management with `React Hooks`. The to-do list tasks are persisted using a GraphQL API with a MongoDB database. As I did not want to require users to authenticate in order to use the to-do list, whenever a user creates a task, there is a check done to see if a userID cookie exists. If there is a unique ID, the user already has data persisted in the backend and can be fetched. If there is not a userID cookie, a new user is created in the database and its unique ID is saved as a cookie. This means that user's to-do list tasks will only be persisted if they are using the same browser and they have not cleared their cache. 
+
+Later on, I will implement an auth flow so users can choose to sign-up and persist their data throughout different devices.
 
 ### GraphQL API
-The GraphQL API consists of the basic CRUD operations to create, read, update and delete tasks from a user as well as creating and deleting a user itself. 
+The `GraphQL` API consists of the basic `CRUD` operations to create, read, update and delete tasks from a user as well as creating and deleting a user itself. 
 
 
 
