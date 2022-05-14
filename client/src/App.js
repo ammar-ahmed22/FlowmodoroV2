@@ -1,11 +1,18 @@
-import './css/App.css';
-import Main from './pages/Main';
+import './App.css';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import Home from './pages/Home';
+import { FlowProvider } from './contexts/FlowContext';
 
-const App = () => {
+function App() {
   return (
-    <div className="App">
-      <Main />
-    </div>
+    <FlowProvider>
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Home} />
+        </Switch>
+      </Router>
+    </FlowProvider>
+    
   );
 }
 

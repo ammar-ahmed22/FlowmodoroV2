@@ -1,27 +1,37 @@
-export const secondsToHMS = (secs) =>{
-    const h = Math.floor(secs / 3600);
-    const m = Math.floor(secs % 3600 / 60);
-    const s = Math.floor(secs % 3600 % 60);
-
-    return {
-        hours: h < 10 ? `0${h}` : h,
-        minutes: m < 10 ? `0${m}` : m,
-        seconds: s < 10 ? `0${s}` : s
-    };
+export const secondsToHMS = secs => {
+    const [h, m, s] = new Date(secs * 1000).toISOString().substr(11, 8).split(":")
+    return { 
+        h, m, s
+    }
 }
 
-export const displayCalcBreak = (elapsed) =>{
-    const hours = Math.floor(elapsed / 3600);
-    const minutes = Math.floor(elapsed % 3600 / 60);
-    const seconds = Math.floor(elapsed % 3600 % 60);
+export const secondsToTimeString = secs => {
+    const { h, m, s } = secondsToHMS(secs);
+
+    let values = [
+        {
+            value: parseInt(h),
+            type: 'h'
+        },
+        {
+            value: parseInt(m),
+            type: "m"
+        },
+        {
+            value: parseInt(s),
+            type: "s"
+        }
+    ];
+
+    let nonZeroValues = values.filter( item => item.value );
+
+    let result = nonZeroValues.map( item => {
+        return `${item.value}${item.type}`
+    }).join(" ");
     
-    if (seconds && !minutes && !hours){
-        return `${seconds}s`
-    }else if (seconds && minutes && !hours){
-        return `${minutes}m ${seconds}s`
-    }else if (seconds && minutes && hours){
-        return `${hours}h ${minutes}m ${seconds}s`;
-    }else{
+    if (nonZeroValues.length === 0){
         return '0s'
     }
+
+    return result
 }

@@ -1,52 +1,49 @@
-import mongoose from "mongoose";
+"use strict";
 
-const UserSchema = new mongoose.Schema({
-    tasks: [
-        {
-            taskName: {
-                type: String,
-                required: [true, "Task name is required"]
-            },
-            taskId: {
-                type: String,
-                required: [true, 'taskId is required']
-            },
-            completed: {
-                type: Boolean,
-                required: [true, "completed Boolean is required"]
-            },
-            notes: String
-        }
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-    ]
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports["default"] = void 0;
+
+var _mongoose = _interopRequireDefault(require("mongoose"));
+
+var UserSchema = new _mongoose["default"].Schema({
+  tasks: [{
+    name: {
+      type: String,
+      required: [true, "Please provide task name."]
+    },
+    completed: {
+      type: Boolean,
+      required: [true, "Completed value for task must be provided."]
+    },
+    notes: {
+      type: String,
+      required: false
+    }
+  }],
+  sessionData: [{
+    workTime: {
+      type: Number
+    },
+    breakRatio: {
+      type: Number
+    },
+    datetimeCompleted: {
+      type: Date
+    }
+  }]
 });
 
-UserSchema.methods.updateTask = function(taskId, task){
-    for (let i = 0; i < this.tasks.length; i++){
-        if (this.tasks[i].taskId === taskId){
-            this.tasks[i] = task;
-        }
-    }
-}
+UserSchema.methods.deleteTask = function (taskId) {
+  this.tasks = this.tasks.filter(function (task) {
+    return !task._id.equals(taskId);
+  });
+};
 
-UserSchema.methods.findTaskById = function(taskId){
-    for (let i = 0; i < this.tasks.length; i++){
-        if (this.tasks[i].taskId === taskId){
-            return this.tasks[i];
-        }
-    }
-}
+var User = _mongoose["default"].model("User", UserSchema);
 
-UserSchema.methods.removeTaskById = function(taskId){
-    for (let i = 0; i < this.tasks.length; i++){
-        if (this.tasks[i].taskId === taskId){
-            this.tasks.splice(i, 1);
-        }
-    }
-}
-
-const User = mongoose.model("User", UserSchema);
-
-
-
-export default User;
+var _default = User;
+exports["default"] = _default;
