@@ -7,19 +7,19 @@ const Nav = () => {
 
     const { isBreak, toggleIsBreak, setWorkTime, setBreakTime, timeElapsed } = useContext(FlowContext);
 
-    const bgColor = useColorModeValue("white", "gray.700")
-
+    const bgColor = useColorModeValue("white", "gray.800")
+    const primary = useColorModeValue("primary.600", "primary.200");
     const styleProps = {
         main: {
             w: "100%",
             mb: 5,
             border: "2px",
-            borderColor: "primary",
+            borderColor: primary,
             borderRadius: "lg"
         },
         workBtn: {
-            bg: isBreak ? "transparent" : "primary",
-            color: isBreak ? "primary" : bgColor,
+            bg: isBreak ? "transparent" : primary,
+            color: isBreak ? primary : bgColor,
             height: "100%",
             py: "1",
             _focus: {},
@@ -27,8 +27,8 @@ const Nav = () => {
             leftIcon: <FontAwesomeIcon icon="briefcase"/>
         },
         breakBtn: {
-            bg: isBreak ? "primary" : "transparent",
-            color: isBreak ? bgColor : "primary",
+            bg: isBreak ? primary : "transparent",
+            color: isBreak ? bgColor : primary,
             height: "100%",
             py: "1",
             _focus: {},

@@ -13,13 +13,13 @@ const Indicator = () => {
             main: {
                 w: "100%",
                 border: "2px",
-                borderColor: "primary",
+                borderColor: "primary.300",
                 h: "5vh",
                 borderRadius: "md",
                 align: "center"
             },
             movingBar: {
-                bg: "primary",
+                bg: "primary.300",
                 height: "5vh",
                 borderRadius: "md",
                 transition: "all .35s ease"
@@ -31,11 +31,11 @@ const Indicator = () => {
                 textAlign: "start"
             },
             text: {
-                color: "primary",
+                color: "primary.300",
             },
             textSpan: {
                 as: "span",
-                bg: "primary",
+                bg: "primary.300",
                 color: "gray.800",
                 p: 1,
                 borderRadius: "md"

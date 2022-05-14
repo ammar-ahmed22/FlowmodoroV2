@@ -28,16 +28,13 @@ const Controls = () => {
         },
         tooltip: {
             hasArrow: true,
-            bg: "gray.800",
+            bg: "gray.700",
             color: "white"
         },
         iconButton: {
             variant: "ghost",
-            color: "primary",
+            colorScheme: "primary",
             fontSize: "2xl",
-            _hover: {
-                color: "white"
-            }
         }
     }
 

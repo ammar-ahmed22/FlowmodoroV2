@@ -29,7 +29,7 @@ const Timer = () => {
             fontSize: "7xl",
             lineHeight: "4.5rem",
             marginInlineStart: "0 !important",
-            color: "primary"
+            color: useColorModeValue("primary.600", "primary.200")
         }
     }
 
