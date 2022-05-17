@@ -1,11 +1,30 @@
-import React, { useState, useId } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Box, Text, Button } from "@chakra-ui/react"
 import Task from './Task';
 import EditableTask from './EditableTask';
+import { TodoContext } from '../../contexts/TodoContext';
+import useUserID from '../../hooks/useUserID';
 
 const Todo = () => {
 
-    //const id = useId();
+    const { id, tasks, setTasks } = useContext(TodoContext);
+
+    const [userID, setUserID, removeUserID] = useUserID();
+
+    // TEMPORARY (testing)
+    useEffect(() => {
+        setUserID("627fff10e1594b803ec08405")
+    }, [])
+
+    useEffect(() => {
+        
+        const ids = tasks.map(task => task._id)
+
+        
+    }, [tasks])
+
+    
+    
     const fakeData = [
         {
             _id: "3453493858",
@@ -59,13 +78,13 @@ const Todo = () => {
 
     return (
         <Box {...styleProps.main}>
-            <Text {...styleProps.title}>Today's Tasks ({data.length})</Text>
-            <Text {...styleProps.completed}>Completed: {data.filter( task => task.completed ).length}</Text>
+            <Text {...styleProps.title}>Today's Tasks ({tasks.length})</Text>
+            {/* {tasks && <Text {...styleProps.completed}>Completed: {tasks.filter( task => task.completed ).length}</Text>} */}
             {
-                data && data.map( task => {
+                tasks instanceof Array && tasks.map( task => {
                     const { name, completed, notes, _id, subtasks } = task;
 
-                    return <Task key={_id} name={name} completed={completed} notes={notes} id={_id} subtasks={subtasks} setData={setData} />
+                    return <Task key={_id} task={task}  />
                 })
             }
             <EditableTask setData={setData} />

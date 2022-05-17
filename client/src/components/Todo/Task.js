@@ -1,82 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Box, Checkbox, VStack, useColorModeValue, IconButton } from "@chakra-ui/react";
 import { EditIcon } from "@chakra-ui/icons";
+import { TodoContext } from '../../contexts/TodoContext';
 
-const Task = ({ name, completed, notes, id, subtasks, setData }) => {
+const Task = ({ task }) => {
+
+    const { name, completed, _id: id, subtasks } = task; 
+
+    const { toggleTaskComplete, toggleSubtaskComplete } = useContext(TodoContext);
 
     const allChecked = subtasks.map( subtask => subtask.completed).every(Boolean);
     const isIndeterminate = subtasks.map( subtask => subtask.completed).some(Boolean) && !allChecked;
 
+    // Setting task to complete if all subtasks are checked
     useEffect(() => {
-        
-            setData( prev => {
-                const copy = [...prev];
-
-                const taskToUpdateIdx = prev.map( task => task._id).indexOf(id);
-
-                copy[taskToUpdateIdx].completed = allChecked;
-
-                return copy
-            })
-        
-
+        toggleTaskComplete(id, { setTo: allChecked, updateSubtasks: false })
     }, [allChecked])
 
-    const handleTaskChange = e => {
-
-        setData( prev => {
-            console.log(prev)
-            // return prev;
-            const copy = [...prev];
-
-            const taskToUpdateIdx = prev.map( task => task._id).indexOf(id);
-            const task = copy[taskToUpdateIdx];
-
-            copy[taskToUpdateIdx].completed = e.target.checked;
-
-            if (subtasks.length){
-                copy[taskToUpdateIdx].subtasks = task.subtasks.map( subtask => {
-                    return {
-                        ...subtask,
-                        completed: e.target.checked
-                    }
-                }, e, id)
-            }
-            
-
-            return copy
-            
-
-        })
-
-
-    }
-
-    const handleSubtaskChange = (e, subtaskId) => {
-
-        setData( prev => {
-            const copy = [...prev];
-
-            const taskToUpdateIdx = prev.map( task => task._id).indexOf(id);
-
-            const subtaskToUpdateIdx = subtasks.map( subtask => subtask._id).indexOf(subtaskId);
-
-            copy[taskToUpdateIdx].subtasks = subtasks.map( subtask => {
-                if (subtask._id === subtaskId){
-                    return {
-                        ...subtask,
-                        completed: e.target.checked
-                    }
-                }
-
-                return subtask
-            })
-
-            return copy;
-
-
-        }, e, id, subtaskId, subtasks)
-    }
+    
 
     const styleProps = {
         main: {
@@ -108,13 +49,13 @@ const Task = ({ name, completed, notes, id, subtasks, setData }) => {
         
         <Box {...styleProps.main} >
             <IconButton {...styleProps.editBtn} />
-            <Checkbox {...styleProps.checkbox} size="lg" isChecked={subtasks.length ? allChecked : completed } isIndeterminate={subtasks.length ? isIndeterminate : false} onChange={handleTaskChange}>{name}</Checkbox>
+            <Checkbox {...styleProps.checkbox} size="lg" isChecked={subtasks.length ? allChecked : completed } isIndeterminate={subtasks.length ? isIndeterminate : false} onChange={e => toggleTaskComplete(id, { setTo: e.target.checked, updateSubtasks: true })}>{name}</Checkbox>
             
             <VStack align="start" ml="8" mt="2">
                 {
                     subtasks && subtasks.map( subtask => {
 
-                        return <Checkbox {...styleProps.checkbox} isChecked={subtask.completed} onChange={e => handleSubtaskChange(e, subtask._id)}>{subtask.name}</Checkbox>
+                        return <Checkbox {...styleProps.checkbox} isChecked={subtask.completed} onChange={e => toggleSubtaskComplete(id, subtask._id, { setTo: e.target.checked })}>{subtask.name}</Checkbox>
                     })
                 }
             </VStack>

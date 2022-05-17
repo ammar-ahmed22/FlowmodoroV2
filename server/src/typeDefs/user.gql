@@ -1,8 +1,19 @@
+type Subtask {
+    _id: ID
+    name: String!
+    completed: Boolean!
+}
+
+input SubtaskInput {
+    name: String!
+    completed: Boolean!
+}
+
 type Task{
     _id: ID!
     name: String!
     completed: Boolean!
-    notes: String
+    subtasks: [Subtask]
 }
 
 type SessionData {
@@ -27,9 +38,15 @@ type Query{
 
 
 type Mutation{
-    createUserWithTask(name: String!, completed: Boolean!, notes: String) : User!,
+    createUserWithTask(name: String!, completed: Boolean!, subtasks: [SubtaskInput]) : User!,
     createUserWithSession(workTime: Int!, breakRatio: Int!, datetimeCompleted: String!) : User!
     addSessionData(id: String!, workTime: Int!, breakRatio: Int!, datetimeCompleted: String!) : User!
-    addTask(id: String!, name: String!, completed: Boolean!, notes: String) : User!
+    addTask(id: String!, name: String!, completed: Boolean!, subtasks: [SubtaskInput]) : User!
     deleteTask(id: String!, taskId: String!) : User!
+    addSubtasks(id: String, taskId: String!, subtasks: [SubtaskInput]!) : User!
+    deleteSubtask(id: String, taskId: String!, subtaskId: String!): User!
+    editTaskName(id: String!, taskId: String!, name: String!) : User!
+    editSubtaskName(id: String, taskId: String!, subtaskId: String!, name: String!) : User!
+    completeTask(id: String!, taskId: String!, completed: Boolean!): User!
+    completeSubtask(id: String!, taskId: String!, subtaskId: String!): User!
 }
