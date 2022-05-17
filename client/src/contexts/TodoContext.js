@@ -1,6 +1,9 @@
 import React, { createContext, useState, useEffect } from "react"
 import useUserID from "../hooks/useUserID";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql, useMutation } from "@apollo/client";
+import TOGGLE_TASK from "../graphql/mutations/TOGGLE_TASK";
+import TOGGLE_SUBTASK from "../graphql/mutations/TOGGLE_SUBTASK";
+import GET_TASKS from "../graphql/queries/GET_TASKS";
 //import { gql } from "graphql";
 
 const TodoContext = createContext();
@@ -9,6 +12,11 @@ const TodoProvider = ({ children }) => {
 
     // Cookies
     const [ userID, setUserID, removeUserID] = useUserID();
+
+    const [ toggleTask, toggleTaskResponse ] = useMutation(TOGGLE_TASK, { errorPolicy: "all"});
+    const [ toggleSubtask, toggleSubtaskResponse ] = useMutation(TOGGLE_SUBTASK, { errorPolicy: "all" });
+
+    
 
     const getIdxById = (array, id) => {
         return array.map( item => item._id ).indexOf(id);
@@ -22,10 +30,11 @@ const TodoProvider = ({ children }) => {
         tasks: [],
         setTasks: tasks => setState( state => ({...state, tasks })),
         toggleTaskComplete: (id, options={ setTo: null, updateSubtasks: false }) => {
+            const { setTo, updateSubtasks } = options;
             setState( state => {
 
-                const { setTo, updateSubtasks } = options;
-                console.log("toggleTaskComplete:", options)
+                
+                //console.log("toggleTaskComplete:", options)
 
                 const taskIdx = getIdxById(state.tasks, id)
 
@@ -55,6 +64,19 @@ const TodoProvider = ({ children }) => {
                     tasks: updated
                 }
             })
+
+            
+            if (setTo !== null && userID && id){
+                
+                toggleTask({ variables: {
+                    id: userID,
+                    taskId: id,
+                    setTo: setTo
+                }})
+            }
+            
+
+            
         },
         editTaskName: (id, name) => {
             setState( state => {
@@ -71,9 +93,10 @@ const TodoProvider = ({ children }) => {
             })
         },
         toggleSubtaskComplete: (taskId, subtaskId, options={ setTo: null }) => {
+            const { setTo } = options;
             setState( state => {
                 
-                const { setTo } = options;
+                //const { setTo } = options;
 
                 const taskIdx = getIdxById(state.tasks, taskId);
                 const subtaskIdx = getIdxById(state.tasks[taskIdx].subtasks, subtaskId);
@@ -101,46 +124,66 @@ const TodoProvider = ({ children }) => {
                 }
 
             })
+
+            if (userID){
+                toggleSubtask({ variables: {
+                    id: userID,
+                    taskId,
+                    subtaskId,
+                    setTo
+                }})
+            }
+            
         },
         editSubtaskName: () => {},
     })
 
 
-    const GET_TASKS = gql`
-        query getTasks($id: String!){
-            getTasks(id: $id){
-                _id
-                name
-                completed
-                subtasks{
-                    _id
-                    name
-                    completed
-                }
-            }
-        }
-    `
-
-    useEffect(() => {
-        console.log({ userID })
-        state.setId(userID);
-    }, [userID])
-
-    const { data, loading, error } = useQuery(GET_TASKS, {
+    const getTaskResponse = useQuery(GET_TASKS, {
         variables: { id: state.id },
         skip: !state.id
     })
 
     
 
+
+
     useEffect(() => {
-        console.log({ data, loading, error })
+        console.log({ userID })
+        state.setId(userID);
+    }, [userID])
+
+    useEffect(() => {
+        const { data, loading, error } = toggleTaskResponse;
+
+        if (error){
+            console.log(error)
+        }
+
+    }, [toggleTaskResponse])
+
+    useEffect(() => {
+        const { data, loading, error } = toggleSubtaskResponse;
+
+        if (error){
+            console.log(error)
+        }
+    }, [toggleSubtaskResponse])
+
+    
+
+    
+
+    useEffect(() => {
+        //console.log({ data, loading, error })
+        const { data, loading, error } = getTaskResponse;
+
         if (data && data.getTasks && !state.dataExists){
             console.log("SETTING TASKS")
             state.setTasks(data.getTasks);
             state.setDataExists(true);
         }
-    }, [data, loading, error ])
+    }, [getTaskResponse ])
 
     return (
         <TodoContext.Provider value={state} >

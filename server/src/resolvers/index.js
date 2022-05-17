@@ -135,8 +135,35 @@ const resolvers = {
 
         },
         editSubtaskName: () => {},
-        completeTask: () => {},
-        completeSubtask: () => {},
+        toggleTask: async (_, { id, taskId, setTo }) => {
+            //toggle task
+
+            const user = await User.findById(id);
+
+            if (user){
+                const error = await user.toggleTask(taskId, setTo);
+
+                if (error){
+                    throw new UserInputError(error, { id, taskId });
+                }
+
+                return user;
+            }
+        },
+        toggleSubtask: async (_, { id, taskId, subtaskId, setTo }) => {
+
+            const user = await User.findById(id);
+
+            if (user){
+                const error = await user.toggleSubtask(taskId, subtaskId, setTo);
+
+                if (error){
+                    throw new UserInputError(error, { id, taskId });
+                }
+
+                return user;
+            }
+        },
     }
 }
 

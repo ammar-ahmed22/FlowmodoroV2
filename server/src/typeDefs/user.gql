@@ -47,6 +47,6 @@ type Mutation{
     deleteSubtask(id: String, taskId: String!, subtaskId: String!): User!
     editTaskName(id: String!, taskId: String!, name: String!) : User!
     editSubtaskName(id: String, taskId: String!, subtaskId: String!, name: String!) : User!
-    completeTask(id: String!, taskId: String!, completed: Boolean!): User!
-    completeSubtask(id: String!, taskId: String!, subtaskId: String!): User!
+    toggleTask(id: String!, taskId: String!, setTo: Boolean): User!
+    toggleSubtask(id: String!, taskId: String!, subtaskId: String!, setTo: Boolean): User!
 }

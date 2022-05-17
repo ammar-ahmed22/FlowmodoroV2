@@ -40,6 +40,10 @@ const UserSchema = new mongoose.Schema({
     ]
 })
 
+const getIdxFromID = (mongoArray, id) => {
+    return mongoArray.map( item => item._id.toString()).indexOf(id);
+}
+
 UserSchema.methods.addTask = async function(task){
     this.tasks.push(task);
 
@@ -48,7 +52,7 @@ UserSchema.methods.addTask = async function(task){
 
 UserSchema.methods.addSubtasks = async function(taskId, subtasks){
 
-    const taskIdx = this.tasks.filter( task => task._id ).indexOf(taskId);
+    const taskIdx = getIdxFromID(this.tasks, taskId);
 
     if (taskIdx === -1){
         return "Task not found"
@@ -71,19 +75,78 @@ UserSchema.methods.deleteTask = async function(taskId){
 }
 
 UserSchema.methods.deleteSubtask = async function(taskId, subtaskId){
-    const taskIdx = this.tasks.map( task => task._id).indexOf(taskId);
+    const taskIdx = getIdxFromID(this.tasks, taskId);
 
     if (taskIdx === -1){
         return "Task not found"
     }else{
         const task = this.tasks[taskIdx];
 
-        const subIdx = task.subtasks.map( subtask => subtask._id).indexOf(subtaskId);
+        const subIdx = getIdxFromID(task.subtasks, subtaskId);
 
         if (subIdx === -1){
             return "Subtask not found"
         }else{
             this.tasks[taskIdx].subtasks = task.subtasks.filter( (_, idx) => idx !== subIdx);
+
+            await this.save();
+
+            return false
+        }
+    }
+}
+
+UserSchema.methods.toggleTask = async function(taskId, setTo){
+    const idmap = this.tasks.map(task => task._id.toString());
+    
+    
+    const taskIdx = getIdxFromID(this.tasks, taskId);
+
+    if (taskIdx === -1){
+        return "Task not found"
+    }else{
+        //console.log(this.tasks, taskIdx);
+        const task = this.tasks[taskIdx];
+        //console.log(task);
+        const subtasks = task.subtasks;
+
+        this.tasks[taskIdx].completed = setTo !== null ? setTo : task.completed ? false : true;
+
+        
+        this.tasks[taskIdx].subtasks = subtasks.map( subtask => {
+            return {
+                ...subtask,
+                completed: setTo !== null ? setTo : task.completed ? false : true
+            }
+        })
+        
+
+        await this.save();
+
+        return false
+    }
+}
+
+UserSchema.methods.toggleSubtask = async function(taskId, subtaskId, setTo){
+    const taskIdx = getIdxFromID(this.tasks, taskId);
+
+    if (taskIdx === -1){
+        return "Task not found"
+    }else{
+        const task = this.tasks[taskIdx];
+
+        const subtaskIdx = getIdxFromID(task.subtasks, subtaskId);
+
+        if (subtaskIdx === -1){
+            return "Subtask not found"
+        }else{
+            this.tasks[taskIdx].subtasks[subtaskIdx].completed = setTo !== null ? setTo : task.subtasks[subtaskIdx].completed ? false : true;
+
+            const allComplete = this.tasks[taskIdx].subtasks.every( subtask => subtask.completed );
+
+            if (allComplete){
+                this.tasks[taskIdx].completed = true;
+            }
 
             await this.save();
 

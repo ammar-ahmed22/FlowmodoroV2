@@ -84,7 +84,7 @@ const Todo = () => {
                 tasks instanceof Array && tasks.map( task => {
                     const { name, completed, notes, _id, subtasks } = task;
 
-                    return <Task key={_id} task={task}  />
+                    return <Task id={_id} task={task} key={_id} />
                 })
             }
             <EditableTask setData={setData} />

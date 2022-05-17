@@ -3,9 +3,9 @@ import { Box, Checkbox, VStack, useColorModeValue, IconButton } from "@chakra-ui
 import { EditIcon } from "@chakra-ui/icons";
 import { TodoContext } from '../../contexts/TodoContext';
 
-const Task = ({ task }) => {
+const Task = ({ id, task }) => {
 
-    const { name, completed, _id: id, subtasks } = task; 
+    const { name, completed, subtasks } = task; 
 
     const { toggleTaskComplete, toggleSubtaskComplete } = useContext(TodoContext);
 
@@ -55,7 +55,7 @@ const Task = ({ task }) => {
                 {
                     subtasks && subtasks.map( subtask => {
 
-                        return <Checkbox {...styleProps.checkbox} isChecked={subtask.completed} onChange={e => toggleSubtaskComplete(id, subtask._id, { setTo: e.target.checked })}>{subtask.name}</Checkbox>
+                        return <Checkbox {...styleProps.checkbox} key={subtask._id} isChecked={subtask.completed} onChange={e => toggleSubtaskComplete(id, subtask._id, { setTo: e.target.checked })}>{subtask.name}</Checkbox>
                     })
                 }
             </VStack>
