@@ -1,10 +1,13 @@
 import React, { createContext, useState, useEffect } from "react"
 import useUserID from "../hooks/useUserID";
 import { useQuery, gql, useMutation } from "@apollo/client";
-import TOGGLE_TASK from "../graphql/mutations/TOGGLE_TASK";
-import TOGGLE_SUBTASK from "../graphql/mutations/TOGGLE_SUBTASK";
-import GET_TASKS from "../graphql/queries/GET_TASKS";
-//import { gql } from "graphql";
+import { loader } from "graphql.macro";
+const toggleTaskMutation = loader("../graphql/mutations/toggleTask.graphql");
+const toggleSubtaskMutation = loader("../graphql/mutations/toggleSubtask.graphql");
+const addTaskMutation = loader("../graphql/mutations/addTask.graphql");
+const getTasksQuery = loader("../graphql/queries/getTasks.graphql");
+const deleteTaskMutation = loader("../graphql/mutations/deleteTask.graphql");
+
 
 const TodoContext = createContext();
 
@@ -13,8 +16,24 @@ const TodoProvider = ({ children }) => {
     // Cookies
     const [ userID, setUserID, removeUserID] = useUserID();
 
-    const [ toggleTask, toggleTaskResponse ] = useMutation(TOGGLE_TASK, { errorPolicy: "all"});
-    const [ toggleSubtask, toggleSubtaskResponse ] = useMutation(TOGGLE_SUBTASK, { errorPolicy: "all" });
+    const [ toggleTask, toggleTaskResponse ] = useMutation(toggleTaskMutation, { errorPolicy: "all"});
+    const [ toggleSubtask, toggleSubtaskResponse ] = useMutation(toggleSubtaskMutation, { errorPolicy: "all" });
+
+    const [ addTask ] = useMutation(addTaskMutation, { 
+        errorPolicy: "all", 
+        onCompleted: data => {
+            console.log("onCompleted:", data);
+            state.setTasks(data.addTask.tasks);
+        } 
+    });
+
+    const [ deleteTask ] = useMutation(deleteTaskMutation, { 
+        errorPolicy: "all", 
+        onCompleted: (data) => {
+            console.log("onCompleted:", data)
+            state.setTasks(data.deleteTask.tasks);
+        } 
+    });
 
     
 
@@ -32,9 +51,6 @@ const TodoProvider = ({ children }) => {
         toggleTaskComplete: (id, options={ setTo: null, updateSubtasks: false }) => {
             const { setTo, updateSubtasks } = options;
             setState( state => {
-
-                
-                //console.log("toggleTaskComplete:", options)
 
                 const taskIdx = getIdxById(state.tasks, id)
 
@@ -136,17 +152,42 @@ const TodoProvider = ({ children }) => {
             
         },
         editSubtaskName: () => {},
+        addTask: (task) => {
+            task.subtasks = task.subtasks.map( subtask => {
+                const updated = {...subtask};
+
+                delete updated._id;
+
+                return updated;
+            })
+            if (userID){
+                const { name, completed, subtasks } = task;
+                addTask({ variables: {
+                    id: userID,
+                    name,
+                    completed,
+                    subtasks
+                }})
+            }
+        },
+        deleteTask: (taskId) => {
+            console.log("delete being called");
+            if (userID){
+                deleteTask({
+                    variables: {
+                        id: userID,
+                        taskId
+                    }
+                })
+            }
+        }
     })
 
 
-    const getTaskResponse = useQuery(GET_TASKS, {
+    const getTaskResponse = useQuery(getTasksQuery, {
         variables: { id: state.id },
         skip: !state.id
     })
-
-    
-
-
 
     useEffect(() => {
         console.log({ userID })
@@ -170,12 +211,8 @@ const TodoProvider = ({ children }) => {
         }
     }, [toggleSubtaskResponse])
 
-    
-
-    
-
     useEffect(() => {
-        //console.log({ data, loading, error })
+        
         const { data, loading, error } = getTaskResponse;
 
         if (data && data.getTasks && !state.dataExists){
@@ -183,7 +220,7 @@ const TodoProvider = ({ children }) => {
             state.setTasks(data.getTasks);
             state.setDataExists(true);
         }
-    }, [getTaskResponse ])
+    }, [getTaskResponse])
 
     return (
         <TodoContext.Provider value={state} >

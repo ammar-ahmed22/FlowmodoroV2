@@ -69,6 +69,7 @@ const resolvers = {
 
             const user = await User.findById(id);
 
+
             if (user){
                 
                 await user.addTask({

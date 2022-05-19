@@ -19,6 +19,7 @@
     "@testing-library/user-event": "^13.5.0",
     "framer-motion": "^6",
     "graphql": "^16.5.0",
+    "graphql.macro": "^1.4.2",
     "react": "^18.1.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.1.0",

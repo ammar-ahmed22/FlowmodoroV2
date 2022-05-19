@@ -1,0 +1,12 @@
+query getTasks($id: String!){
+    getTasks(id: $id){
+        _id
+        name
+        completed
+        subtasks{
+            _id
+            name
+            completed
+        }
+    }
+}

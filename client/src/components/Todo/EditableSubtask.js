@@ -30,6 +30,13 @@ const EditableSubtask = ({ subtask, setSubtasks }) => {
         })
     }
 
+    const handleRemove = e => {
+        setSubtasks( prev => {
+            
+            return prev.filter( prevsub => prevsub._id !== subtask._id )
+        })
+    }
+
     return (
         <HStack justify="space-between" w="100%" pl="5" >
             <HStack>
@@ -44,7 +51,7 @@ const EditableSubtask = ({ subtask, setSubtasks }) => {
             </HStack>
             <HStack>
                 <Button colorScheme="primary" size="xs" variant="outline" onClick={isEditing ? handleSave : handleEdit } >{ isEditing ? "Save" : "Edit"}</Button>
-                <Button colorScheme="primary" size="xs" variant="outline" >Remove</Button>
+                <Button colorScheme="primary" size="xs" variant="outline" onClick={handleRemove}>Remove</Button>
             </HStack>
         </HStack>
     );

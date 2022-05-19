@@ -1,0 +1,21 @@
+mutation deleteTask(
+    $id: String!,
+    $taskId: String!
+){
+    deleteTask(
+        id: $id,
+        taskId: $taskId
+    ){
+        _id,
+        tasks{
+            _id
+            name
+            completed
+            subtasks{
+                _id
+                name
+                completed
+            }
+        }
+    }
+}

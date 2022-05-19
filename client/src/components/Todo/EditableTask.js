@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect, useId } from 'react';
+import React, { useState, useRef, useEffect, useId, useContext } from 'react';
 import { Box, Text, useColorModeValue, Button, Flex, Input, HStack, FormControl, FormLabel, VStack, Checkbox, Tag, TagLeftIcon, TagLabel, TagCloseButton, IconButton, Link, Editable } from "@chakra-ui/react"
 import { PlusSquareIcon, SmallAddIcon, MinusIcon, CheckIcon, EditIcon } from '@chakra-ui/icons';
 import EditableSubtask from './EditableSubtask';
+import { TodoContext } from '../../contexts/TodoContext';
+
 
 
 const EditableTask = ({ setData }) => {
@@ -12,6 +14,8 @@ const EditableTask = ({ setData }) => {
     const [taskName, setTaskName] = useState("");
     const [subtasks, setSubtasks] = useState([]);
     const [subTaskName, setSubTaskName] = useState("");
+
+    const { addTask } = useContext(TodoContext)
 
     const styleProps = {
         main: {
@@ -33,7 +37,7 @@ const EditableTask = ({ setData }) => {
         }
     }
 
-    const taskNameInput = useRef();
+    
 
     useEffect(() => {
         if (isEditing){
@@ -74,7 +78,8 @@ const EditableTask = ({ setData }) => {
             subtasks
         }
 
-        setData( prev => ([...prev, task]))
+        addTask(task);
+        //setData( prev => ([...prev, task]))
 
         //setIsEditing(false);
         setAddingSub(false);
@@ -121,7 +126,7 @@ const EditableTask = ({ setData }) => {
                                     {
                                         subtasks.map( subtask => {
                                             return (
-                                            <EditableSubtask subtask={subtask} setSubtasks={setSubtasks} />
+                                            <EditableSubtask subtask={subtask} setSubtasks={setSubtasks} key={subtask._id} />
                                             )
                                         })
                                     }

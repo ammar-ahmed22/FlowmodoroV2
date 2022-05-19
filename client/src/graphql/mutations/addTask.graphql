@@ -1,0 +1,25 @@
+mutation addTask(
+    $id: String!,
+    $name: String!
+    $completed: Boolean!
+    $subtasks: [SubtaskInput]
+){
+    addTask(
+        id: $id,
+        name: $name,
+        completed: $completed,
+        subtasks: $subtasks
+    ){
+        _id
+        tasks{
+            _id
+            name
+            completed
+            subtasks{
+                _id
+                name
+                completed
+            }
+        }
+    }
+}
