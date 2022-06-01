@@ -2,11 +2,12 @@ import React, { createContext, useState, useEffect } from "react"
 import useUserID from "../hooks/useUserID";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import { loader } from "graphql.macro";
-const toggleTaskMutation = loader("../graphql/mutations/toggleTask.graphql");
-const toggleSubtaskMutation = loader("../graphql/mutations/toggleSubtask.graphql");
-const addTaskMutation = loader("../graphql/mutations/addTask.graphql");
-const getTasksQuery = loader("../graphql/queries/getTasks.graphql");
-const deleteTaskMutation = loader("../graphql/mutations/deleteTask.graphql");
+import { getIdxById } from "../utils/helper";
+const toggleTaskMutation = loader("../graphql/mutations/toggleTask.gql");
+const toggleSubtaskMutation = loader("../graphql/mutations/toggleSubtask.gql");
+const addTaskMutation = loader("../graphql/mutations/addTask.gql");
+const getTasksQuery = loader("../graphql/queries/getTasks.gql");
+const deleteTaskMutation = loader("../graphql/mutations/deleteTask.gql");
 
 
 const TodoContext = createContext();
@@ -36,11 +37,6 @@ const TodoProvider = ({ children }) => {
     });
 
     
-
-    const getIdxById = (array, id) => {
-        return array.map( item => item._id ).indexOf(id);
-    }
-
     const [state, setState] = useState({
         id: null,
         setId: id => setState( state => ({...state, id })),
@@ -51,17 +47,22 @@ const TodoProvider = ({ children }) => {
         toggleTaskComplete: (id, options={ setTo: null, updateSubtasks: false }) => {
             const { setTo, updateSubtasks } = options;
             setState( state => {
-
+                // index of task
                 const taskIdx = getIdxById(state.tasks, id)
 
+                // copying tasks
                 const updated = [...state.tasks];
                 
+                // copying task
                 const task = {...updated[taskIdx]};
 
+                // if setTo is given; set, otherwise; toggle
                 task.completed = setTo !== null ? setTo : state.tasks[taskIdx].completed ? false : true;
 
+                // if subtasks are present and updatedSubtasks true
                 if (task.subtasks.length && updateSubtasks){
 
+                    // update all subtasks to setTo value or toggle
                     task.subtasks = task.subtasks.map( subtask => {
                         return {
                             ...subtask,
@@ -71,6 +72,7 @@ const TodoProvider = ({ children }) => {
 
                 }
 
+                // insert updated task into updated tasks list
                 updated[taskIdx] = task;
 
                 
@@ -81,7 +83,7 @@ const TodoProvider = ({ children }) => {
                 }
             })
 
-            
+            // call mutation 
             if (setTo !== null && userID && id){
                 
                 toggleTask({ variables: {
@@ -112,7 +114,7 @@ const TodoProvider = ({ children }) => {
             const { setTo } = options;
             setState( state => {
                 
-                //const { setTo } = options;
+                
 
                 const taskIdx = getIdxById(state.tasks, taskId);
                 const subtaskIdx = getIdxById(state.tasks[taskIdx].subtasks, subtaskId);

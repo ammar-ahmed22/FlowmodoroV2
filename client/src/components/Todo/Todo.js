@@ -16,49 +16,13 @@ const Todo = () => {
         setUserID("627fff10e1594b803ec08405")
     }, [])
 
-    useEffect(() => {
-        
-        const ids = tasks.map(task => task._id)
-
-        
-    }, [tasks])
+    
 
     
     
-    const fakeData = [
-        {
-            _id: "3453493858",
-            name: "Co-op applications",
-            notes: "-Go through all postings and add to shortlist\n-Add shortlist items to Notion\n-Apply to all",
-            completed: false,
-            subtasks: [
-                {
-                    name: "Go through all postings and add to shortlist",
-                    completed: true,
-                    _id: "3485983495"
-                },
-                {
-                    name: "Add shortlist items to Notion",
-                    completed: true,
-                    _id: "93845884578"
-                },
-                {
-                    name: "Apply to all",
-                    completed: false,
-                    _id: "39456435684"
-                }
-            ]
-        },
-        {
-            _id: "3845894856",
-            name: "NE 242 Lab Report",
-            completed: true,
-            notes: null,
-            subtasks: []
-        }
-    ]
+    
 
-    const [data, setData] = useState(fakeData);
+    const [data, setData] = useState([]);
 
     const styleProps = {
         main: {
